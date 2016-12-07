@@ -6,9 +6,9 @@ var app = function(){
   selectBox.onchange = handleSelectChanged;
 
     var lastCountry = localStorage.getItem("lastCountry");
-
-  var select = document.getElementById('country-list');
-  select.innerText = lastCountry;
+    var id = JSON.parse(lastCountry);
+  var pTag = document.querySelector('#country-result');
+  pTag.innerText = selectedCountryDetails(id);
 
 }
 
@@ -24,7 +24,6 @@ var makeRequest = function(url, callback){
 }
 
 var requestComplete = function(){
-  console.log("Whoot! success");
   if (this.status !== 200) return;
   var jsonString = this.responseText;
   localStorage.setItem("countries", jsonString);
@@ -39,7 +38,6 @@ var populateList = function(countries){
     option.innerText = country.name;
     option.value = countries.indexOf(country);
     var lastCountry = localStorage.getItem("lastCountry");
-    console.log(lastCountry);
     var savedCountry = JSON.parse(lastCountry)
     if (option.value === savedCountry){
       option.selected = "selected"
@@ -49,14 +47,9 @@ var populateList = function(countries){
     
   }
 
-  var handleSelectChanged = function(event){
+  var handleSelectChanged = function(){
     var pTag = document.querySelector('#country-result');
-    var country = findCountryById(this.value);
-    var name = country.name;
-    var population = country.population;
-    var capital = country.capital;
-    pTag.innerText = "Country: " + name + " \nCapital City: " + capital + "  \nPopulation: " + population;
-
+    pTag.innerText = selectedCountryDetails(this.value);
     var lastCountry = JSON.stringify(this.value);
     localStorage.setItem("lastCountry", lastCountry);
     
@@ -66,6 +59,15 @@ var populateList = function(countries){
     var saved = localStorage.getItem("countries");
     countries = JSON.parse(saved);
     return countries[id];
+  }
+
+  var selectedCountryDetails = function(id) {
+    var country = findCountryById(id);
+    var name = country.name;
+    var population = country.population;
+    var capital = country.capital;
+    return "Country: " + name + " \nCapital City: " + capital + "  \nPopulation: " + population;
+
   }
 
 
