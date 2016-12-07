@@ -4,6 +4,8 @@ var app = function(){
 
   var selectBox = document.querySelector('select');
   selectBox.onchange = handleSelectChanged;
+
+
 }
 
 var makeRequest = function(url, callback){
@@ -32,20 +34,25 @@ var populateList = function(countries){
     var option = document.createElement('option');
     option.innerText = country.name;
     option.value = countries.indexOf(country);
-    select.appendChild(option);
-}
-}
+    var lastCountry = localStorage.getItem("lastCountry");
+    if (option.innerText === lastCountry){
+      option.selected = "selected"};
+      select.appendChild(option);
+    }
+  }
 
-var handleSelectChanged = function(event){
-  var pTag = document.querySelector('#country-result');
-  var saved = localStorage.getItem("countries");
-  countries = JSON.parse(saved);
-  var country = countries[this.value];
-  var name = country.name;
-  var population = country.population;
-  var capital = country.capital;
-  pTag.innerText = "Country: " + name + " \nCapital City: " + capital + "  \nPopulation: " + population;
-}
+  var handleSelectChanged = function(event){
+    var pTag = document.querySelector('#country-result');
+    var saved = localStorage.getItem("countries");
+    countries = JSON.parse(saved);
+    var country = countries[this.value];
+    var name = country.name;
+    var population = country.population;
+    var capital = country.capital;
+    pTag.innerText = "Country: " + name + " \nCapital City: " + capital + "  \nPopulation: " + population;
+
+    localStorage.setItem("lastCountry", name);
+  }
 
 
-window.onload = app;
+  window.onload = app;
