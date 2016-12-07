@@ -36,7 +36,8 @@ var populateList = function(countries){
 }
 
 var handleSelectChanged = function(event){
-
+  var pTag = document.querySelector('#country-result');
+  pTag.innerText = this.value;
 }
 
 window.onload = app;
